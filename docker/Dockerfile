@@ -1,5 +1,5 @@
 FROM composer:2.9@sha256:1997db9e43fde2a5a20f32fcfd50f26f698d951b3787334ebd6493d0562de97f AS composer
-FROM debian:bullseye@sha256:ee239c601913c0d3962208299eef70dcffcb7aac1787f7a02f6d3e2b518755e6
+FROM debian:bookworm@sha256:c66c66fac809bfb56a8001b12f08181a49b6db832d2c8ddabe22b6374264055f
 WORKDIR /usr/src/myapp
 
 RUN apt-get update  \
@@ -23,7 +23,7 @@ RUN apt-get install -y \
     php${PHP_VERSION}-grpc \
     php${PHP_VERSION}-intl \
     php${PHP_VERSION}-mbstring \
-    php${PHP_VERSION}-opcache \
+    $(if [ "${PHP_VERSION}" -lt "8.5" ]; then echo "php${PHP_VERSION}-opcache"; fi) \
     php${PHP_VERSION}-opentelemetry \
     php${PHP_VERSION}-protobuf \
     php${PHP_VERSION}-simplexml \
